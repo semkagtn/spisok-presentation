@@ -8,6 +8,7 @@
 \usepackage{color}
 \usepackage{graphicx}
 \usepackage{mathtools}
+\usepackage{bm}
 \usetheme{default}
 
 \newcommand{\prevGender}{78,87\%}
@@ -28,31 +29,11 @@
 
 \subject{Научно-исследовательская работа}
 
-\AtBeginSection[]
-{
-  \begin{frame}<beamer>{Содержание}
-    \tableofcontents[currentsection]
-  \end{frame}
-}
-
-\AtBeginSubsection[]
-{
-  \begin{frame}<beamer>{Содержание}
-    \tableofcontents[currentsection,currentsubsection]
-  \end{frame}
-}
-
 \begin{document}
 
 \begin{frame}
   \titlepage
 \end{frame}
-
-\begin{frame}{Содержание}
-  \tableofcontents
-\end{frame}
-
-\section{Введение}
 
 \begin{frame}{Интернет и его пользователи}
   \begin{itemize}
@@ -62,7 +43,6 @@
               \item {Vkontakte~--- $75 \cdot 10^{6}$ уникальных посещений сайта в день}
               \item {Instagram~--- $400 \cdot 10^{6}$ уникальных посещений сайта в месяц}
           \end{itemize}
-      \pause
       \item {Информация о пользователях находится в открытом доступе}
           \begin{itemize}
               \item {Текст, который пишут пользователи}
@@ -78,29 +58,15 @@
 \begin{frame}{Определение характеристик пользователей}
   \begin{itemize}
       \item {Информация о пользователях часто является не полной}
-      \pause
-      \item {Задача: определить отсутствующие характеристики по имеющимся}
-      \pause
-      \item {Определение пола и возраста по музыкальным предпочтениям пользоватлей}
+      \item {Задача: определить отсутствующие характеристики по имеющимся (по музыке)}
+      \item {Характеристики пользователей являются ключевыми признаками в рекомендательных системах}
+      \item {Существует множество подходов к определению характеристик пользователей}
+          \begin{itemize}
+              \item {Информация о музыке пользователей используется не часто}
+              \item {Метод, использующий музыкальные предпочтения, может помочь улучшить существующие алгоритмы}
+          \end{itemize}
   \end{itemize}
 \end{frame}
-
-\begin{frame}{Мотивация}
-    \begin{itemize}
-        \item {Пол и возраст~--- одни из ключевых характеристик,
-            использующихся в рекомендательных системах}
-        \pause
-        \item {Существует множество подходов к определению пола
-            и возраста пользователей}
-            \begin{itemize}
-                \item {Информация о музыке пользователей используется не часто}
-                \item {Метод определения пола и возраста по музыке
-                    может помочь улучшить существующие методы}
-            \end{itemize}
-    \end{itemize}
-\end{frame}
-
-\section{Описание данных}
 
 \begin{frame}{Источник данных~--- Last.fm}
     \begin{figure}
@@ -108,54 +74,28 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}{Набор данных}
-    \begin{itemize}
-        \item {Использовался набор данных из существующего 
-              исследования~\footnote{Wu M. J.,
-              Jang J. S. R., Lu C. H. Gender Identification
-              and Age Estimation of Users Based on Music 
-              Metadata // ISMIR. – 2014. – P.~555--560.}}
-        \pause
-        \item {Всего $96807$ пользователей}
-            \begin{itemize}
-                \item {48404 пользователей в обучающей выборке}
-                \item {48403 пользователей в контрольной выборке}
-            \end{itemize}
-        \pause
-        \item {У каждого пользователя указан пол и возраст}
-        \item {Пользователь описан исполнителями из top-50 наиболее
-            прослушиваемых им композиций}
-        \pause
-        \item {Особенности выборки}
-            \begin{itemize}
-                \item {66{,}2\% и 33{,}8\% мужчин и женщин соответственно}
-                \item {Возраст пользователей смещён в сторону молодого поколения}
-            \end{itemize}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Иллюстрация задачи определения пола и возраста}
+\begin{frame}{Задача определения характеристик пользователей}
     \begin{figure}
-        \includegraphics[scale=0.42]{figures/lastfm-top.pdf}
+        \includegraphics[scale=0.40]{figures/lastfm-top.pdf}
     \end{figure}
 \end{frame}
 
-\section{Преобразование данных в векторное пространство}
+\begin{frame}{Концепция модели}
+    \begin{figure}
+        \includegraphics[scale=0.40]{figures/concept.pdf}
+    \end{figure}
+\end{frame}
 
-\subsection{Подход на основе матрицы термин--документ}
-
-\begin{frame}{Матрица термин--документ}
+\begin{frame}{Матрица исполнитель--пользователь}
   \begin{itemize}
       \item {Пользователи~--- документы, исполнители~--- термины}
       \item {$D = \{d_{ij}\}$~--- матрица термин--документ}
-      \pause
       \item {$d_{ij} = \mathrm{tf}_{ij} \cdot \log{\frac{n}{\mathrm{df}_{i}}}$ (Формула TF-IDF)}
           \begin{itemize}
               \item $\mathrm{tf}_{ij}$~--- число встреч термина $i$ в документе $j$
               \item $\mathrm{df}_{i}$~--- число документов, в которых встречается термин $i$
               \item $n$~--- общее число документов
           \end{itemize}
-      \pause
       \item {$d_{ij} = \begin{cases}
           0,& \mathrm{tf}_{ij} = 0,\\
           l(\mathrm{tf}_{ij}) \cdot g(\frac{n}{\mathrm{df}_{i}}),& \mathrm{tf}_{ij} \ne 0
@@ -166,26 +106,19 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Снижение размерности термин--документ}
+\begin{frame}{Латентный семантический анализ}
   \begin{itemize}
       \item {Каждый пользователь описывается вектором-столбоцом матрицы $D$}
-      \pause
       \item {Размерность векторов~--- $96891$}
-      \pause
       \item {Используя метод \textit{LSI}, можно уменьшить размерность векторов (например, до $200$)}
-      \pause
       \item {Каждый пользователь описан числовым вектром размерности $200$}
   \end{itemize}
 \end{frame}
 
-\subsection{Подход на основе модели Word2Vec}
-
 \begin{frame}{Модель Word2Vec}
   \begin{itemize}
       \item {Пользователи~--- предложения, исполнители~--- термины}
-      \pause
       \item {\textit{Word2Vec} преобразует термины в вектора произвольной размерности (например, $200$)}
-      \pause
       \item {Каждый пользователь описан последовательность векторов} 
   \end{itemize}
 \end{frame}
@@ -193,21 +126,40 @@
 \begin{frame}{Преобразование в вектора пользователей}
   \begin{itemize}
       \item {Требуется преобразовать последовательность векторов в один вектор}
-      \pause
-      \item {$d_{i} = \sum\limits_{n}{f(n) \cdot w_{in}}$}
+      \item {$\bm{d}_{i} = \sum\limits_{n}{f(n) \cdot \bm{w}_{in}}$}
           \begin{itemize}
-              \item {$d_{i}$~--- вектор пользователя}
-              \item {$w_{in}$~--- исполнитель пользователя $i$, находящийся на позиции $n$}
+              \item {$\bm{d}_{i}$~--- вектор пользователя}
+              \item {$\bm{w}_{in}$~--- исполнитель пользователя $i$, находящийся на позиции $n$}
               \item {$f(n)$~--- невозрастающая неотрицательная функция на отрезке $[1; 50]$}
           \end{itemize}
-      \pause
       \item {Каждый пользователь описан числовым вектром размерности $200$}
   \end{itemize}
 \end{frame}
 
-\section{Этап обучения и результаты}
+\begin{frame}{Модель на примере определения пола и возраста}
+    \begin{itemize}
+        \item {Использовался набор данных из существующего 
+              исследования~\footnote{Wu M. J.,
+              Jang J. S. R., Lu C. H. Gender Identification
+              and Age Estimation of Users Based on Music 
+              Metadata // ISMIR. – 2014. – P.~555--560.}}
+        \item {Всего $96807$ пользователей}
+            \begin{itemize}
+                \item {48404 пользователей в обучающей выборке}
+                \item {48403 пользователей в контрольной выборке}
+            \end{itemize}
+        \item {У каждого пользователя указан пол и возраст}
+        \item {Пользователь описан исполнителями из top-50 наиболее
+            прослушиваемых им композиций}
+        \item {Особенности выборки}
+            \begin{itemize}
+                \item {66{,}2\% и 33{,}8\% мужчин и женщин соответственно}
+                \item {Возраст пользователей смещён в сторону молодого поколения}
+            \end{itemize}
+    \end{itemize}
+\end{frame}
 
-\begin{frame}{Этап обучения}
+\begin{frame}{Обучение классификатора/регрессора}
   \begin{itemize}
       \item {Определение пола~--- задача бинарной классификации}
           \begin{itemize}
@@ -217,10 +169,9 @@
           \begin{itemize}
               \item {Качество~--- средняя абсолютная ошибка}
           \end{itemize}
-      \pause
       \item {Метод опорных векторов с ядром \textit{RBF}}
-      \pause
       \item {Параметры $C$ и $\gamma$ настраивались методом \textit{Grid Search Cross Validation} на обучающей выборке}
+      \item {Векторы пользователей были нормализованы перед использованием метода опорных векторов}
   \end{itemize}
 \end{frame}
 
@@ -313,5 +264,7 @@
 \begin{frame}
     \titlepage
 \end{frame}
+
+
 
 \end{document}
