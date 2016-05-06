@@ -20,7 +20,7 @@
 \setbeamertemplate{footline}[frame number]
 
 \title{Определение демографических характеристик пользователей
-сайта Last.fm на основе анализа их музыкальных интересов}
+социальных сетей на основе анализа их музыкальных интересов}
 \author{\textbf{Семёнов~A.~C.,} \\ 
     магистрант кафедры КТ университета ИТМО, \\
     semkagtn@gmail.com}
@@ -57,7 +57,7 @@
 
 \begin{frame}{Задача профилирования пользователей}
   \begin{itemize}
-      \item {Информация о пользователях часто является неполной}
+      \item {Информация о пользователях часто является неполной или отсутствует}
       \item {Задача: определить отсутствующие характеристики по имеющимся (по музыке)}
       \item {Характеристики пользователей являются ключевыми признаками в рекомендательных системах}
       \item {Существует множество подходов к определению характеристик пользователей}
@@ -77,12 +77,6 @@
 \begin{frame}{Задача определения характеристик пользователей}
     \begin{figure}
         \includegraphics[scale=0.40]{figures/lastfm-top.pdf}
-    \end{figure}
-\end{frame}
-
-\begin{frame}{Концепция модели}
-    \begin{figure}
-        \includegraphics[scale=0.40]{figures/concept.pdf}
     \end{figure}
 \end{frame}
 
@@ -115,7 +109,7 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Модель Word2Vec}
+\begin{frame}{Подход на основе Word2Vec}
   \begin{itemize}
       \item {Пользователи~--- предложения, исполнители~--- термины}
       \item {\textit{Word2Vec} преобразует термины в вектора произвольной размерности (например, $200$)}
@@ -135,7 +129,7 @@
               исследования~\footnote{Wu M. J.,
               Jang J. S. R., Lu C. H. Gender Identification
               and Age Estimation of Users Based on Music 
-              Metadata // ISMIR. – 2014. – P.~555--560.}}
+              Metadata // The International Society of Music Information Retrieval (ISMIR). – 2014. – P.~555--560.}}
         \item {Всего $96807$ пользователей}
             \begin{itemize}
                 \item {48404 пользователей в обучающей выборке}
@@ -238,7 +232,7 @@
     \textit{baseline}~--- Wu M. J.,
         Jang J. S. R., Lu C. H. Gender Identification
         and Age Estimation of Users Based on Music 
-        Metadata // ISMIR. – 2014. – P.~555--560.
+        Metadata // The International Society of Music Information Retrieval (ISMIR). – 2014. – P.~555--560.
     \begin{table}[h!]
     \centering
     \begin{tabular}{|c|c|c|}
